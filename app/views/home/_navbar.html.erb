@@ -1,0 +1,17 @@
+<% content_for :stylesheets do %>
+    <%= stylesheet_link_tag 'custom_styleSheet1', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <% end %>
+
+
+  
+<div class="navbar">
+
+  <a href="#home">Home</a>
+  <div class="hello">
+
+  <%= link_to "sign in", login_path %>
+  <%= link_to "sign up", signup_path %>
+ 
+  </div>
+
+</div>

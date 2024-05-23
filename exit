@@ -1,0 +1,43 @@
+ => 
+[[32m#<User:0x000055eecd87fcc8[0m
+  id: [34m[1m1[0m,
+  username: [31m[1m"[0m[31mjohn_doe[0m[31m[1m"[0m,
+  created_at: Wed, 22 May 2024 17:28:30.215068000 UTC +00:00,
+  updated_at: Wed, 22 May 2024 17:28:30.215068000 UTC +00:00,
+  email: [31m[1m"[0m[31mjohn@example.com[0m[31m[1m"[0m,
+  password_digest: [36m[1mnil[0m[32m>[0m,
+ [32m#<User:0x00007faf3035caf0[0m
+  id: [34m[1m2[0m,
+  username: [31m[1m"[0m[31mjane_doe[0m[31m[1m"[0m,
+  created_at: Wed, 22 May 2024 17:28:30.219262000 UTC +00:00,
+  updated_at: Wed, 22 May 2024 17:28:30.219262000 UTC +00:00,
+  email: [31m[1m"[0m[31mjane@example.com[0m[31m[1m"[0m,
+  password_digest: [36m[1mnil[0m[32m>[0m,
+ [32m#<User:0x00007faf3035c780[0m
+  id: [34m[1m3[0m,
+  username: [31m[1m"[0m[31malex_smith[0m[31m[1m"[0m,
+  created_at: Wed, 22 May 2024 17:28:30.220999000 UTC +00:00,
+  updated_at: Wed, 22 May 2024 17:28:30.220999000 UTC +00:00,
+  email: [31m[1m"[0m[31malex@example.com[0m[31m[1m"[0m,
+  password_digest: [36m[1mnil[0m[32m>[0m,
+ [32m#<User:0x00007faf3035c5a0[0m
+  id: [34m[1m4[0m,
+  username: [31m[1m"[0m[31mjoh_doe[0m[31m[1m"[0m,
+  created_at: Thu, 23 May 2024 05:29:04.380809000 UTC +00:00,
+  updated_at: Thu, 23 May 2024 05:29:04.380809000 UTC +00:00,
+  email: [31m[1m"[0m[31mjoh@example.com[0m[31m[1m"[0m,
+  password_digest: [31m[1m"[0m[31m[FILTERED][0m[31m[1m"[0m[32m>[0m,
+ [32m#<User:0x00007faf3035c320[0m
+  id: [34m[1m5[0m,
+  username: [31m[1m"[0m[31mjan_doe[0m[31m[1m"[0m,
+  created_at: Thu, 23 May 2024 05:29:04.387582000 UTC +00:00,
+  updated_at: Thu, 23 May 2024 05:29:04.387582000 UTC +00:00,
+  email: [31m[1m"[0m[31mjae@example.com[0m[31m[1m"[0m,
+  password_digest: [31m[1m"[0m[31m[FILTERED][0m[31m[1m"[0m[32m>[0m,
+ [32m#<User:0x00007faf3035c190[0m
+  id: [34m[1m6[0m,
+  username: [31m[1m"[0m[31male_smith[0m[31m[1m"[0m,
+  created_at: Thu, 23 May 2024 05:29:04.393000000 UTC +00:00,
+  updated_at: Thu, 23 May 2024 05:29:04.393000000 UTC +00:00,
+  email: [31m[1m"[0m[31malx@example.com[0m[31m[1m"[0m,
+  password_digest: [31m[1m"[0m[31m[FILTERED][0m[31m[1m"[0m[32m>[0m] 

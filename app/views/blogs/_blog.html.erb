@@ -1,0 +1,23 @@
+
+<% content_for :blog_css do %>
+  <%= stylesheet_link_tag 'custom_styleSheet2', media: 'all', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+
+
+
+
+<div class="blog-container" id="<%= dom_id blog %>">
+<div class="hi">
+  <div class="blog-details">
+    <h2> <%= blog.title %></h2>
+    <p><%= blog.description %></p>
+  </div>
+  <div class="blog-actions">
+    <button>Edit</button>
+    <button>Delete</button>
+  </div>
+</div>
+
+<%= link_to "Show this blog", blog %>
+</div>
