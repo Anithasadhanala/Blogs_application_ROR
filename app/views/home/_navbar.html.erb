@@ -9,9 +9,18 @@
   <a href="#home">Home</a>
   <div class="hello">
 
+  <% unless logged_in? %>
+  
   <%= link_to "sign in", login_path %>
   <%= link_to "sign up", signup_path %>
  
+<% end %>
+
+<% if logged_in? %>
+<li><%= button_to "Logout", signup_path, method: :delete %></li>
+<% end %>
+
+
   </div>
 
 </div>
