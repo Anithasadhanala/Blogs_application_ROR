@@ -1,26 +1,18 @@
-<% content_for :stylesheets do %>
+  <% content_for :stylesheets do %>
     <%= stylesheet_link_tag 'custom_styleSheet1', media: 'all', 'data-turbolinks-track': 'reload' %>
   <% end %>
 
 
   
 <div class="navbar">
-
-  <a href="#home">Home</a>
-  <div class="hello">
-
-  <% unless logged_in? %>
-  
-  <%= link_to "sign in", login_path %>
-  <%= link_to "sign up", signup_path %>
- 
-<% end %>
-
-<% if logged_in? %>
-<li><%= button_to "Logout", signup_path, method: :delete %></li>
-<% end %>
-
-
+  <%= link_to "Home", root_path %>
+    <div class="hello">
+    <% unless logged_in? %>
+    <%= link_to "sign in", login_path %>
+    <%= link_to "sign up", signup_path %>
+  <% end %>
+  <% if logged_in? %>
+  <li><%= button_to "Logout", user_path, method: :delete %></li>
+  <% end %>
   </div>
-
 </div>

@@ -4,20 +4,20 @@
 <% end %>
 
 
-
-
-
-<div class="blog-container" id="<%= dom_id blog %>">
+<div class="blog-container" >
 <div class="hi">
   <div class="blog-details">
     <h2> <%= blog.title %></h2>
     <p><%= blog.description %></p>
+    <% category = Category.find_by(id: blog.category_id) %>
+    <p>category : <%= category ? category.name : 'Uncategorized' %></p>
   </div>
   <div class="blog-actions">
-    <button>Edit</button>
-    <button>Delete</button>
+  <% if current_user && current_user.id == blog.user_id %>
+    <button><%= link_to "Edit", editblog_path(blog.id), class:"iamclass" %></button>
+     <%= link_to "Delete", deleteblog_path(blog), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    <% end %>
   </div>
 </div>
-
-<%= link_to "Show this blog", blog %>
+<%= link_to "Show this blog", blog_path(blog.id) %>
 </div>

@@ -1,70 +1,81 @@
 class BlogsController < ApplicationController
-  before_action :set_blog, only: %i[ show edit update destroy ]
 
-  # GET /blogs or /blogs.json
-  def index
-    @blogs = Blog.all
-  end
 
-  # GET /blogs/1 or /blogs/1.json
-  def show
-  end
+  # unless these checks are verifies, all below methods are not called
+  before_action :authenticate_user!
+  before_action :set_blog, only: [:show, :showall, :create,:update]
+  
 
-  # GET /blogs/new
+  
+  # new blog creation get route calls this action
   def new
     @blog = Blog.new
   end
+  
 
-  # GET /blogs/1/edit
-  def edit
+  # returns only the blogs of a particular user
+  def show
+    @user = current_user 
+    @blogs = @user.blogs
   end
 
-  # POST /blogs or /blogs.json
+
+  # returns all the blogs from the DB
+  def showall
+    @blogs = Blog.all
+  end 
+  
+
+  # creates a new blog, post method calls this action
   def create
     @blog = Blog.new(blog_params)
-
-    respond_to do |format|
-      if @blog.save
-        format.html { redirect_to blog_url(@blog), notice: "Blog was successfully created." }
-        format.json { render :show, status: :created, location: @blog }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @blog.errors, status: :unprocessable_entity }
-      end
+    if @blog.save
+      redirect_to blogs_path , notice: "Blog was successfully created."
+    else
+      render :new
     end
   end
 
-  # PATCH/PUT /blogs/1 or /blogs/1.json
+  # get edit route calls this action
+  def edit
+    @blog = Blog.new
+  end
+
+
+  # post each blog route calls this  route for specific blog
+  def each
+    @blog = Blog.new
+    @blog = Blog.find(params[:id])
+  end
+
+
+  # post update route calls this method
   def update
-    respond_to do |format|
-      if @blog.update(blog_params)
-        format.html { redirect_to blog_url(@blog), notice: "Blog was successfully updated." }
-        format.json { render :show, status: :ok, location: @blog }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @blog.errors, status: :unprocessable_entity }
-      end
+    @blog = Blog.find(params[:id])
+    
+    if @blog.update(blog_update_params)
+      redirect_to blog_path(@blog), notice: "Blog updated successfully."
+    else
+      render :edit
     end
   end
+  
 
-  # DELETE /blogs/1 or /blogs/1.json
-  def destroy
-    @blog.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to blogs_url, notice: "Blog was successfully destroyed." }
-      format.json { head :no_content }
-    end
+  # update blog takes only these params
+  def blog_update_params
+    params.require(:blog).permit(:title, :description, :category_id)
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_blog
-      @blog = Blog.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def blog_params
-      params.require(:blog).permit(:title, :description,:category_id, :user_id)
-    end
+  # delete blog route calls this action for deleting the method
+  def delete
+    @blog.destroy
+    redirect_to blogs_path, notice: "Blog was successfully deleted."
+  end
+
+
+  # Only allow a list of trusted parameters through.
+  def blog_params
+    params.require(:blog).permit(:title, :description,:category_id, :user_id)
+  end
 end

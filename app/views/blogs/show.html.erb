@@ -1,10 +1,13 @@
-<p style="color: green"><%= notice %></p>
+<h1>Blogs</h1>
 
-<%= render @blog %>
-
-<div>
-  <%= link_to "Edit this blog", edit_blog_path(@blog) %> |
-  <%= link_to "Back to blogs", blogs_path %>
-
-  <%= button_to "Destroy this blog", @blog, method: :delete %>
+<div id="blogs">
+<% if @blogs.present? %>
+  <% @blogs.each do |blog| %>
+    <%= render blog %>
+    <p>
+    </p>
+  <% end %>
+  <% end %>
 </div>
+
+<%= link_to "New blog", newblog_path %>

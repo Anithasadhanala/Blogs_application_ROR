@@ -1,20 +1,36 @@
 Rails.application.routes.draw do
-  
-  resources :blogs
+  # Health check
+  get "up", to: "rails/health#show", as: :rails_health_check
 
- 
-  get "up" => "rails/health#show", as: :rails_health_check
-
+  # Login
   get "/login", to: "users#signin"
   post "/login", to: "users#login"
 
-  get '/signup', to: 'users#new'
-  post '/signup', to: 'users#create'
+  # Register
+  get "/signup", to: "users#new"
+  post "/signup", to: "users#create"
 
-  delete '/signup', to: 'users#destroy'
+  # Delete user
+  delete "/user", to: "users#destroy"
+
+  # New blog
+  get "/newblog", to: "blogs#new"
+  post "/blogs", to: "blogs#create"
+
+  # Show all blogs
+  get "/myblogs", to: "blogs#show"
+  get "/blogs", to: "blogs#showall"
+
+  # Show individual blog
+  get "/blog/:id", to: "blogs#each", as: :blog
+
+  get "/blog/:id/edit", to: "blogs#edit", as: :editblog
+  patch '/blog/:id/edit', to: 'blogs#update', as: :updateblog
+
+  delete '/blog/:id', to: 'blogs#delete', as: :deleteblog
 
 
+
+  # Root
   root "home#index"
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

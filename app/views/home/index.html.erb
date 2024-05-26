@@ -6,26 +6,26 @@
 
 
   <div class="hero">
+    <% if logged_in? %>
+    <h1>Hi <%= current_user.username %></h1>
+    <% end %>
     <h1>Welcome to Your Blog</h1>
     <p>Discover amazing content and share your own stories.</p>
+    <%= link_to "Create Blog", newblog_path, class:"iamclass" %>
   </div>
-  
+
 
   <div class="content">
     <h2>What is Your Blog?</h2>
     <p>Your Blog is a platform where you can find and share incredible stories, ideas, and experiences. Whether you're a writer, reader, or just someone looking for inspiration, Your Blog offers something for everyone.</p>
-    
     <div class="features">
       <div class="feature">
         <h3>Explore</h3>
         <p>Browse through a variety of categories and topics to find content that interests you.</p>
       </div>
       <div class="feature">
-        
-           
         <h3>Create</h3>
         <p>Share your own stories and insights with our easy-to-use blogging tools.</p>
-        
       </div>
       <div class="feature">
         <h3>Connect</h3>
@@ -33,7 +33,6 @@
       </div>
     </div>
   </div>
-
   <footer>
     <p>&copy; 2024 Your Blog. All rights reserved.</p>
   </footer>
