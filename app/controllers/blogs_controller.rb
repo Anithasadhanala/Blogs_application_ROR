@@ -3,15 +3,12 @@ class BlogsController < ApplicationController
 
   # unless these checks are verifies, all below methods are not called
   before_action :authenticate_user!
-  before_action :set_blog, only: [:show, :showall, :create,:update]
   
 
-  
   # new blog creation get route calls this action
   def new
     @blog = Blog.new
   end
-  
 
   # returns only the blogs of a particular user
   def show

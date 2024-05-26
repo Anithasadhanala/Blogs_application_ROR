@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect_to login_path, notice: "Welcome! You have signed up successfully."
     else
-      render :signup
+      render :new
     end
   end
 
