@@ -9,6 +9,7 @@ class UsersController < ApplicationController
 
   # post signup route calls this action for creating new user
   def create
+
     @user = User.new(user_params)
     existing_user = User.find_by(username: @user.username) || User.find_by(email: @user.email)
     if existing_user
@@ -36,23 +37,27 @@ class UsersController < ApplicationController
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
       session_id = SecureRandom.hex + user.id.to_s
-      expires_at = 1.week.from_now
-      ActiveSession.create(user_id: user.id, session_id: session_id, expires_at: expires_at)
+     # Calculate expires_at to be 1 minute from now
+
+     current_time =Time.now # or use Time.now.getlocal('+05:30')
+     new_time = current_time + 60.seconds
+
+      ActiveSession.create(user_id: user.id, session_id: session_id, expires_at: new_time,active: true)
       session[:user_session_id] = session_id
       redirect_to root_path, notice: 'Logged in successfully'
-    else
-      flash.now[:alert] = "Invalid email or password"
-      render :new
-    end
+      
+      else
+        flash.now[:alert] = "Invalid email or password"
+        render :new
+      end
   end
 
 
 
   # delete user route calls this action
+  #**************************active ======false
   def destroy
-    session[:user_id] = nil
-    redirect_to root_path, notice: "Logged out successfully"
+    session[:user_session_id] = nil
+    redirect_to login_path, notice: "Logged out successfully"
   end
-
-  
 end

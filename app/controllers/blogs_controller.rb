@@ -3,6 +3,9 @@ class BlogsController < ApplicationController
 
   # unless these checks are verifies, all below methods are not called
   before_action :authenticate_user!
+
+  
+
   
 
   # new blog creation get route calls this action
@@ -35,7 +38,7 @@ class BlogsController < ApplicationController
 
   # get edit route calls this action
   def edit
-    @blog = Blog.new
+    @blog = Blog.find(params[:id])
   end
 
 
@@ -66,6 +69,8 @@ class BlogsController < ApplicationController
 
   # delete blog route calls this action for deleting the method
   def delete
+
+   @blog = Blog.find_by(id: params[:id])
     @blog.destroy
     redirect_to blogs_path, notice: "Blog was successfully deleted."
   end

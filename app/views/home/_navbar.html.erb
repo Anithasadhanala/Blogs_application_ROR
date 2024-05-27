@@ -7,12 +7,12 @@
 <div class="navbar">
   <%= link_to "Home", root_path %>
     <div class="hello">
-    <% unless logged_in? %>
-    <%= link_to "sign in", login_path %>
-    <%= link_to "sign up", signup_path %>
-  <% end %>
-  <% if logged_in? %>
-  <li><%= button_to "Logout", user_path, method: :delete %></li>
-  <% end %>
-  </div>
+      <% unless logged_in? %>
+        <%= link_to "sign in", login_path %>
+        <%= link_to "sign up", signup_path %>
+      <% end %>
+      <% if logged_in? %>
+        <%= button_to "Logout", user_path, method: :delete %>
+     <% end %>
+    </div>
 </div>
