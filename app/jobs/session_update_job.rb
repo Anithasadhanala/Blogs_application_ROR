@@ -6,7 +6,7 @@ class SessionUpdateJob < ApplicationJob
     # method to update active sessions where expires_at time has passed
     # entry point
     def perform(*args)
-      ActiveSession.where("expires_at < ?", Time.current.utc ).update_all(active: false)
+      ActiveSession.where("expires_at < ? AND active = ?", Time.current.utc, true).update_all(active: false)
     end
   end
   

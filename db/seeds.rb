@@ -1,10 +1,16 @@
-# Seed users
-users = [
-  { username: 'joh_doe', password_digest: '12fgfgdfs3', email: 'joh@example.com' },
-  { username: 'jan_doe', password_digest: 'password123', email: 'jae@example.com' },
-  { username: 'ale_smith', password_digest: 'password123',email: 'alx@example.com' },
+# db/seeds.rb
+
+reactions = [
+  { name: 'like', description: 'Indicates a positive reaction to the content' },
+  { name: 'dislike', description: 'Indicates a negative reaction to the content' },
+  { name: 'flag', description: 'Indicates that the content is inappropriate or needs review' }
 ]
 
-users.each do |user|
-  User.create!(user)
+reactions.each do |reaction|
+  Reaction.find_or_create_by(name: reaction[:name]) do |r|
+    r.description = reaction[:description]
+  end
 end
+
+
+puts "Reactions seeded successfully!"

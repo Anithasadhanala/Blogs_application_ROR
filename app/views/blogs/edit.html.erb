@@ -1,19 +1,33 @@
-<%= form_with(model: @blog, url: updateblog_url(@blog.id), local: true) do |form| %>
- 
+<h1>Edit Blog</h1>
+
+<%= form_with(model: @blog, url: updateblog_path(@blog.id), local: true) do |form| %>
+  <% if @blog.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@blog.errors.count, "error") %> prohibited this blog from being saved:</h2>
+      <ul>
+        <% @blog.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
   <div class="field">
     <%= form.label :title %>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, class: 'form-control' %>
   </div>
+
   <div class="field">
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, class: 'form-control' %>
   </div>
+
   <div class="field">
     <%= form.label :category_id %>
-    <%= form.collection_select :category_id, Category.all, :id, :name, prompt: "Select a category" %>
+    <%= form.collection_select :category_id, Category.all, :id, :name, prompt: "Select a category", class: 'form-control' %>
   </div>
+
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Update Blog', class: 'btn btn-primary' %>
   </div>
 <% end %>

@@ -15,9 +15,9 @@
   <div class="blog-actions">
   <% if current_user && current_user.id == blog.user_id %>
     <button><%= link_to "Edit", editblog_path(blog.id), class:"iamclass" %></button>
-     <%= button_to "Delete", deleteblog_path(blog.id), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+     <%= link_to "Delete", deleteblog_path(blog.id), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
     <% end %>
   </div>
 </div>
-<%= link_to "Show this blog", blog_path(blog.id)%>
+<%= link_to "Show this blog", eachblog_path(blog.id)%>
 </div>

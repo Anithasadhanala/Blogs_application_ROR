@@ -2,7 +2,7 @@
 
 <%= form_with(model: @blog, local: true) do |form| %>
   <% if @blog.errors.any? %>
-    <div id="error_explanation">
+    <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(@blog.errors.count, "error") %> prohibited this blog from being saved:</h2>
       <ul>
         <% @blog.errors.full_messages.each do |message| %>
@@ -11,21 +11,26 @@
       </ul>
     </div>
   <% end %>
-  <div class="field">
+
+  <div class="form-group">
     <%= form.label :title %>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, class: 'form-control' %>
   </div>
-  <div class="field">
+
+  <div class="form-group">
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, class: 'form-control' %>
   </div>
-  <div class="field">
+
+  <div class="form-group">
     <%= form.label :category_id %>
-    <%= form.collection_select :category_id, Category.all, :id, :name, prompt: 'Select Category' %>
+    <%= form.collection_select :category_id, Category.all, :id, :name, prompt: 'Select Category', class: 'form-control' %>
   </div>
+
   <!-- Assuming you are setting the user_id based on the current logged-in user -->
   <%= form.hidden_field :user_id, value: current_user.id %>
+
   <div class="actions">
-    <%= form.submit 'Create Blog' %>
+    <%= form.submit 'Create Blog', class: 'btn btn-primary' %>
   </div>
 <% end %>

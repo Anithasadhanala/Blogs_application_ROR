@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_26_181021) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_30_052825) do
   create_table "active_sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "session_id", null: false
@@ -28,17 +28,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_181021) do
     t.integer "tags_id"
     t.index ["blogs_id"], name: "index_blog_tags_on_blogs_id"
     t.index ["tags_id"], name: "index_blog_tags_on_tags_id"
-  end
-
-  create_table "blog_user_reactions", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "blogs_id"
-    t.integer "users_id"
-    t.integer "reactions_id"
-    t.index ["blogs_id"], name: "index_blog_user_reactions_on_blogs_id"
-    t.index ["reactions_id"], name: "index_blog_user_reactions_on_reactions_id"
-    t.index ["users_id"], name: "index_blog_user_reactions_on_users_id"
   end
 
   create_table "blogs", force: :cascade do |t|
@@ -72,12 +61,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_181021) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.integer "name"
-    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "blogs_id"
-    t.index ["blogs_id"], name: "index_comments_on_blogs_id"
+    t.integer "blog_id"
+    t.text "content"
+    t.integer "user_id"
+    t.index ["blog_id"], name: "index_comments_on_blog_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "reactions", force: :cascade do |t|
@@ -105,19 +95,52 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_181021) do
   end
 
   create_table "saved_blogs", force: :cascade do |t|
-    t.boolean "starrted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "blogs_id"
-    t.integer "users_id"
-    t.index ["blogs_id"], name: "index_saved_blogs_on_blogs_id"
-    t.index ["users_id"], name: "index_saved_blogs_on_users_id"
+    t.integer "blog_id"
+    t.integer "user_id"
+    t.boolean "saved", default: true
+    t.boolean "starred", default: false
+    t.index ["blog_id"], name: "index_saved_blogs_on_blog_id"
+    t.index ["user_id"], name: "index_saved_blogs_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_blog_flags", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "blog_id", null: false
+    t.boolean "flag"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blog_id"], name: "index_user_blog_flags_on_blog_id"
+    t.index ["user_id"], name: "index_user_blog_flags_on_user_id"
+  end
+
+  create_table "user_blog_reaction", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "blog_id"
+    t.integer "reaction_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blog_id"], name: "index_user_blog_reaction_on_blog_id"
+    t.index ["reaction_id"], name: "index_user_blog_reaction_on_reaction_id"
+    t.index ["user_id"], name: "index_user_blog_reaction_on_user_id"
+  end
+
+  create_table "user_blog_reactions", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "blog_id"
+    t.integer "reaction_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blog_id"], name: "index_user_blog_reactions_on_blog_id"
+    t.index ["reaction_id"], name: "index_user_blog_reactions_on_reaction_id"
+    t.index ["user_id"], name: "index_user_blog_reactions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -131,17 +154,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_181021) do
   add_foreign_key "active_sessions", "users"
   add_foreign_key "blog_tags", "blogs", column: "blogs_id"
   add_foreign_key "blog_tags", "tags", column: "tags_id"
-  add_foreign_key "blog_user_reactions", "blogs", column: "blogs_id"
-  add_foreign_key "blog_user_reactions", "reactions", column: "reactions_id"
-  add_foreign_key "blog_user_reactions", "users", column: "users_id"
   add_foreign_key "blogs", "categories"
   add_foreign_key "blogs", "users"
   add_foreign_key "comment_reactions", "comments", column: "comments_id"
   add_foreign_key "comment_reactions", "reactions", column: "reactions_id"
-  add_foreign_key "comments", "blogs", column: "blogs_id"
+  add_foreign_key "comments", "blogs"
+  add_foreign_key "comments", "users"
   add_foreign_key "replies", "comments", column: "comments_id"
   add_foreign_key "reply_reactions", "reactions", column: "reactions_id"
   add_foreign_key "reply_reactions", "replies", column: "replies_id"
-  add_foreign_key "saved_blogs", "blogs", column: "blogs_id"
-  add_foreign_key "saved_blogs", "users", column: "users_id"
+  add_foreign_key "saved_blogs", "blogs"
+  add_foreign_key "saved_blogs", "users"
+  add_foreign_key "user_blog_flags", "blogs"
+  add_foreign_key "user_blog_flags", "users"
+  add_foreign_key "user_blog_reaction", "blogs"
+  add_foreign_key "user_blog_reaction", "reactions"
+  add_foreign_key "user_blog_reaction", "users"
+  add_foreign_key "user_blog_reactions", "blogs"
+  add_foreign_key "user_blog_reactions", "reactions"
+  add_foreign_key "user_blog_reactions", "users"
 end

@@ -1,11 +1,28 @@
 class Blog < ApplicationRecord
   belongs_to :user
   belongs_to :category
-  has_many :comments, dependent: :destroy
-  has_many :blog_tags, dependent: :destroy
-  has_many :blog_user_reactions, dependent: :destroy
-  has_many :saved_blogs, dependent: :destroy
+  has_many :comments
 
-  validates :title, presence: true
-  validates :description, presence: true
+  VALID_CHARACTERS_REGEX = /[^a-zA-Z0-9\s.,:':;"`&]/
+
+  validates :title, presence: true, length: { minimum: 5, maximum: 100 }, format: { without: VALID_CHARACTERS_REGEX, message: "only allows letters, numbers, spaces, and .,:':;\"`&" }
+  validates :description, presence: true, length: { minimum: 10, maximum: 500 }, format: { without: VALID_CHARACTERS_REGEX, message: "only allows letters, numbers, spaces, and .,:':;\"`&" }
+
+  validate :no_special_characters_in_title
+  validate :no_special_characters_in_description
+
+
+
+  private
+  def no_special_characters_in_title
+    if title =~ VALID_CHARACTERS_REGEX
+      errors.add(:title, "cannot contain special characters other than .,:':;\"`&")
+    end
+  end
+
+  def no_special_characters_in_description
+    if description =~ VALID_CHARACTERS_REGEX
+      errors.add(:description, "cannot contain special characters other than .,:':;\"`&")
+    end
+  end
 end

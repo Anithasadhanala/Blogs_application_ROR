@@ -9,13 +9,14 @@ class UsersController < ApplicationController
 
   # post signup route calls this action for creating new user
   def create
-
     @user = User.new(user_params)
-    existing_user = User.find_by(username: @user.username) || User.find_by(email: @user.email)
-    if existing_user
-      flash.now[:alert] = "A user with the same username or email already exists."
-      render :new
-    elsif @user.save
+    
+    # existing_user = User.find_by(username: @user.username) || User.find_by(email: @user.email)
+    # if existing_user
+    #   flash.now[:alert] = "A user with the same username or email already exists."
+    #   render :new
+    
+    if @user.save
       session[:user_id] = @user.id
       redirect_to login_path, notice: "Welcome! You have signed up successfully."
     else
@@ -40,7 +41,7 @@ class UsersController < ApplicationController
      # Calculate expires_at to be 1 minute from now
 
      current_time =Time.now # or use Time.now.getlocal('+05:30')
-     new_time = current_time + 60.seconds
+     new_time = current_time + 100000.seconds
 
       ActiveSession.create(user_id: user.id, session_id: session_id, expires_at: new_time,active: true)
       session[:user_session_id] = session_id
@@ -55,8 +56,16 @@ class UsersController < ApplicationController
 
 
   # delete user route calls this action
-  #**************************active ======false
   def destroy
+
+    if session[:user_session_id]
+      active_session = ActiveSession.find_by(session_id: session[:user_session_id])
+      # Update the active column to false if the session is found
+      if active_session
+        active_session.update(active: false)
+      end
+    end
+
     session[:user_session_id] = nil
     redirect_to login_path, notice: "Logged out successfully"
   end
