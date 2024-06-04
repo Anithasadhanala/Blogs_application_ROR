@@ -1,5 +1,18 @@
 <h1>Blogs</h1>
 
+
+
+<div class="categories">
+  <% @categories.each do |category| %>
+    
+    <%= link_to category.name, myblogs_path(category_id: category.id), method: :get, class: "btn btn-warning btn-sm" %>
+  
+  <% end %>
+  <%= button_to 'All', myblogs_path, method: :get, class: "btn btn-primary btn-sm" %>
+</div>
+
+
+
 <div id="blogs">
 <% if @blogs.present? %>
   <% @blogs.each do |blog| %>

@@ -13,16 +13,35 @@ class BlogsController < ApplicationController
 
   # returns only the blogs of a particular user
   def show
-    @user = current_user 
-    @blogs = @user.blogs
+    @categories = Category.all
+    @user = current_user
+
+    if params[:category_id]
+      @blogs = @user.blogs.where(category_id: params[:category_id])
+    else
+      @blogs = @user.blogs
+    end
   end
+
+
 
 
   # returns all the blogs from the DB
   def showall
+    @categories = Category.all
     @blogs = Blog.joins('LEFT JOIN user_blog_flags ON user_blog_flags.blog_id = blogs.id')
-    .where('user_blog_flags.flag IS NULL OR user_blog_flags.flag = ? OR user_blog_flags.user_id = ?', false, current_user.id)
-  end
+                 .where('user_blog_flags.flag IS NULL OR user_blog_flags.flag = ? OR user_blog_flags.user_id = ?', false, current_user.id)
+  
+                 
+    if params[:category_id].present?
+      @blogs = @blogs.where(category_id: params[:category_id])
+    end
+
+    if params[:search].present?
+      search_query = "%#{params[:search].downcase}%"
+      @blogs = @blogs.where('LOWER(blogs.title) LIKE ? ', search_query)
+    end
+   end
 
   
 
@@ -35,6 +54,7 @@ class BlogsController < ApplicationController
       render :new
     end 
   end
+
 
   # get edit route calls this action
   def edit
@@ -60,6 +80,7 @@ class BlogsController < ApplicationController
     @saved_blogs = user_id.saved_blogs.includes(:blog)
   end
  
+
   def save
     blog_id = params[:blog_id]
     blog = Blog.find(blog_id)
@@ -67,7 +88,7 @@ class BlogsController < ApplicationController
     saved_by = SavedBlog.find_by(blog_id: blog_id, user_id: current_user.id)
     if saved_by.present?
       saved_by.update(saved: !saved_by.saved)
-    else0
+    else
       savedBlog = SavedBlog.new(blog_id: blog_id, user_id: current_user.id)
       if savedBlog.save
       else
@@ -80,6 +101,10 @@ class BlogsController < ApplicationController
 
   # post each blog route calls this  route for specific blog
   def each
+    puts("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2")
+    @user_blog_reaction = UserBlogReaction.new
+    @comment = Comment.new
+
     @blog = Blog.new
     @blog = Blog.find(params[:id])
     @reactions = Reaction.all
@@ -87,10 +112,11 @@ class BlogsController < ApplicationController
   end
 
   def react
+  
     blog_id = params[:blog_id]
     blog = Blog.find(blog_id)
     user_id = blog.user_id
-
+    
 
     blog_user_reaction = UserBlogReaction.new(
       user_id: user_id,
@@ -99,8 +125,11 @@ class BlogsController < ApplicationController
     )
     if blog_user_reaction.save
       puts "BlogUserReaction saved successfully!"
+      redirect_back fallback_location: root_path, notice: 'reaction was successfully added.'      
+      
     else
-      puts "Failed to save BlogUserReaction: #{blog_user_reaction.errors.full_messages.join(', ')}"
+      puts "Failed to save BlogUserReaction: #{blog_user_reaction.errors.full_messages.join(', ')}"    
+      
     end 
   end
   
@@ -111,7 +140,7 @@ class BlogsController < ApplicationController
     @blog = Blog.find(params[:id])
     
     if @blog.update(blog_update_params)
-      redirect_to blog_path(@blog), notice: "Blog updated successfully."
+      redirect_to eachblog_path(@blog), notice: "Blog updated successfully."
     else
       render :edit
     end

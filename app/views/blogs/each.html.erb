@@ -1,3 +1,13 @@
+<% if @user_blog_reaction.errors.any? %>
+  <div class="alert alert-danger" role="alert">
+    <% @user_blog_reaction.errors.full_messages.each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+<% end %>
+
+
+
 <h1><%= @blog.title %></h1>
 <p><%= @blog.description %></p>
 <% category = Category.find_by(id: @blog.category_id) %>
@@ -6,7 +16,7 @@
 <div>
   <% @reactions.each do |reaction| %>
     <p>
-      <%= button_to reaction.name.capitalize, reactblog_path(blog_id: @blog.id, reaction: reaction.id), class: "btn btn-primary" %>
+      <%= button_to "#{reaction.name.capitalize} (#{@blog.reaction_count(reaction.id)})", reactblog_path(blog_id: @blog.id, reaction: reaction.id), class: "btn btn-primary" %>
     </p>
   <% end %>
   <% if @blog.user_id != current_user.id %>
@@ -38,15 +48,26 @@
 
 <div id="comments-section">
   <h2>Comments</h2>
-<% if true %>
+
+
+  <% if @comment.errors.any? %>
+  <div class="alert alert-danger" role="alert">
+    <% @comment.errors.full_messages.each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+<% end %>
+
+
+<% if @comments.present? %>
   <% @comments.each do |comment| %>
   <div class="comment" id="comment-<%= comment.id %>">
     <div class="comment-content">
-      <p><%= comment.content %></p>
+      <p class="fw-semibold text-success"><%= comment.content %></p>
     </div>
     <div class="comment-actions">
-      <%= link_to 'Edit', '#', id: "show-edit-comment-form",class: "edit-comment" %>
-      <%= button_to 'Delete', login_path, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+      <%= link_to 'Edit', '#', id: "show-edit-comment-form",class: "btn btn-primary edit-comment"%>
+      <%= button_to 'Delete', destroycomment_path(comment.id), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
     </div>
     <div class="edit-comment-form" id="edit-comment-form" style="display: none;">
       
@@ -90,8 +111,8 @@
   document.querySelectorAll(".edit-comment").forEach(function(editButton) {
     editButton.addEventListener("click", function(event) {
       event.preventDefault();
-      var commentDiv = this.closest(".comment"); // Find the closest comment div
-      var editForm = commentDiv.querySelector(".edit-comment-form"); // Find the edit form within the comment div
+      var commentDiv = this.closest(".comment");
+      var editForm = commentDiv.querySelector(".edit-comment-form"); 
       if (editForm.style.display === "none") {
         editForm.style.display = "block";
       } else {
@@ -99,6 +120,12 @@
       }
     });
   });
+
+
+
+
+
+
 
   
   

@@ -39,6 +39,7 @@ Rails.application.routes.draw do
 
 
   post "blog/:id/comments", to: "comments#create", as: :createcomment
+  delete "delete-comments/:id", to: "comments#destroy", as: :destroycomment
 
   post "blog/:id/save", to:"blogs#save", as: :saveblog_path
 

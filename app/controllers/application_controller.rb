@@ -9,10 +9,11 @@ class ApplicationController < ActionController::Base
       session_data = ActiveSession.find_by(session_id: session[:user_session_id], active: true)
       if session_data && Time.current < session_data.expires_at
       @current_user ||= User.find_by(id: session_data.user_id)
-
+        Current.user = @current_user
       else
         session[:user_session_id] = nil
         @current_user = nil
+        Current.user = nil
       end
     end
   end
